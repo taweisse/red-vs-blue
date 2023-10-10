@@ -1,0 +1,22 @@
+extends layout
+
+block head
+  link(rel='stylesheet', href='/styles/tv.css')
+
+block content
+  #score-section
+    .score-midpoint-top
+    .score-bar
+      #red-bar.score-bar
+        #red-score.score Updating...
+      #blue-bar.score-bar
+        #blue-score.score Updating...
+    .score-midpoint-bottom
+
+  #qr-section
+    #qr-code
+
+block scripts
+    script(src='/scripts/qrcode.min.js')
+    script(src='/scripts/tvInit.js')
+    script(src='/scripts/updateTV.js')
