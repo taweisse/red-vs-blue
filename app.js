@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
 
 // Send data to all connected websocket clients in a loop.
 var updateClients = require('./websockets/update')
-setInterval(function() { updateClients(io) }, 5000);
+setInterval(function() { updateClients(io) }, 3000);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

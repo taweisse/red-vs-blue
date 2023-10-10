@@ -1,5 +1,14 @@
 #activities {
     font-size: 4rem;
+    border-collapse: collapse;
+    text-align: center;
+    table-layout: fixed;
+    width: 100%;
+    margin-top: 3rem;
+}
+
+.strike {
+    text-decoration-line: line-through;
 }
 
 .activity-name {
@@ -8,8 +17,14 @@
 
 .red-score {
     color: red;
+    width: 10%;
 }
 
 .blue-score {
     color: blue;
+    width: 10%;
+}
+
+#activities td {
+    border-top: 4px solid black;
 }
