@@ -19,16 +19,16 @@ function parseTotals(row) {
 function parseSides(row) {
     let cols = row.querySelectorAll('td')
 
-    let redSide = 'left'
-    let blueSide = 'right'
+    let leftSide = 'red'
+    let rightSide = 'blue'
     if (cols[1].innerHTML.toLowerCase().includes('blue')) {
-        blueSide = 'left'
-        redSide = 'right'
+        leftSide = 'blue'
+        rightSide = 'red'
     }
 
     return {
-        red: redSide,
-        blue: blueSide
+        left: leftSide,
+        right: rightSide
     }
 }
 
@@ -46,22 +46,27 @@ function parseActivity(row) {
     }
 }
 
-function parseTeam(team, sides, totals, activities) {
-    let side = sides[team]
-
-    let parsed = {
-        total: totals[side],
+function compileData(sides, totals, activities) {
+    let compiled = {
+        totals: {},
         activities: []
     }
 
+    compiled.totals[sides['left']] = totals['left']
+    compiled.totals[sides['right']] = totals['right']
+
     activities.forEach((activity) => {
-        parsed.activities.push({
-            name: activity.name,
-            score: activity[side]
-        })
+        let newActivity = {
+            name: activity.name
+        }
+
+        newActivity[sides['left']] = activity['left']
+        newActivity[sides['right']] = activity['right']
+
+        compiled.activities.push(newActivity)
     })
 
-    return parsed
+    return compiled
 }
 
 function parseData(data) {
@@ -83,15 +88,7 @@ function parseData(data) {
         }
     })
 
-    // Combine data from both sides into one object.
-    let redData = parseTeam('red', sides, totals, activities)
-    let blueData = parseTeam('blue', sides, totals, activities)
-    let parsed = {
-        red: redData,
-        blue: blueData
-    }
-
-    return parsed;
+    return compileData(sides, totals, activities)
 }
 
 function updateClients(io) {

@@ -1,0 +1,15 @@
+#activities {
+    font-size: 4rem;
+}
+
+.activity-name {
+    width: 80%;
+}
+
+.red-score {
+    color: red;
+}
+
+.blue-score {
+    color: blue;
+}
