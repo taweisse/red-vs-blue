@@ -28,3 +28,15 @@
 #activities td {
     border-top: 4px solid black;
 }
+
+#header-section {
+    filter: drop-shadow(5px 5px 5px rgb(128, 128, 128))
+}
+
+.red::before {
+    content: '\00a0 '
+}
+
+.blue::after {
+    content: '\00a0 '
+}

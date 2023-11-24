@@ -19,7 +19,7 @@ updater.subscribe('data', (data) => {
         activityName.innerHTML = activity.name
 
         // Cross out activities that both teams have completed.
-        if (activity.red && activity.blue) {
+        if (! isNaN(activity.red) && ! isNaN(activity.blue)) {
             activityName.classList.add('strike')
         }
 

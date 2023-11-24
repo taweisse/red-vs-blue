@@ -1,0 +1,3 @@
+'use strict'
+
+fitty('#logo')

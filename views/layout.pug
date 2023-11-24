@@ -6,17 +6,23 @@ html
 
     link(rel = 'preconnect', href='https://fonts.googleapis.com')
     link(rel = 'preconnect', href='https://fonts.gstatic.com', crossorigin)
-    link(href = 'https://fonts.googleapis.com/css2?family=Gabarito:wght@500&family=Lora:wght@700&family=Playfair+Display&display=swap', rel='stylesheet')
+    link(href = 'https://fonts.googleapis.com/css2?family=Gabarito:wght@500&family=Rampart+One&display=swap', rel="stylesheet")
 
     block head
 
   body
-    #header-section
-      img#logo(src="/images/red-vs-blue-logo.png")
+    #header-section.sticky
+      #logo
+        span.red GOOBLE
+        span  vs 
+        span.blue GOBBLE
 
-    block content
+    #body-section
+      block content
 
-    script(src="/socket.io/socket.io.js")
-    script(src="/scripts/websocket.js")
+    script(src='/socket.io/socket.io.js')
+    script(src='/scripts/websocket.js')
+    script(src='/scripts/fitty/fitty.min.js')
+    script(src='/scripts/init.js')
 
     block scripts

@@ -7,8 +7,8 @@ var http = require('http');
 var socketio = require('socket.io');
 var app = express();
 
-var detailRouter = require('./routes/detail');
 var tvRouter = require('./routes/tv');
+var detailRouter = require('./routes/detail');
 
 // Set up server. This used to live in www.
 var server = http.createServer(app);
@@ -34,8 +34,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', detailRouter);
-app.use('/tv', tvRouter);
+app.use('/', tvRouter);
+app.use('/detail', detailRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

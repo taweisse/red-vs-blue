@@ -19,16 +19,16 @@ function parseTotals(row) {
 function parseSides(row) {
     let cols = row.querySelectorAll('td')
 
-    let leftSide = 'red'
-    let rightSide = 'blue'
+    let col1 = 'red'
+    let col2 = 'blue'
     if (cols[1].innerHTML.toLowerCase().includes('blue')) {
-        leftSide = 'blue'
-        rightSide = 'red'
+        col1 = 'blue'
+        col2 = 'red'
     }
 
     return {
-        left: leftSide,
-        right: rightSide
+        left: col1,
+        right: col2
     }
 }
 
@@ -38,11 +38,13 @@ function parseActivity(row) {
     let name = cols[0].innerHTML
     let leftScore = cols[1].innerHTML
     let rightScore = cols[2].innerHTML
+    let maxScore = cols[3].innerHTML ? cols[3].innerHTML : 10;
 
     return {
         name: name,
-        left: leftScore,
-        right: rightScore
+        left: ! leftScore ? '-' : Math.round((leftScore / 10) * maxScore),
+        right: ! rightScore ? '-' : Math.round((rightScore / 10) * maxScore),
+        max: maxScore
     }
 }
 
@@ -56,8 +58,13 @@ function compileData(sides, totals, activities) {
     compiled.totals[sides['right']] = totals['right']
 
     activities.forEach((activity) => {
+        // Skip empty rows
+        if (! activity.name) {
+            return
+        }
+
         let newActivity = {
-            name: activity.name
+            name: `${activity.name} [${activity.max}]`
         }
 
         newActivity[sides['left']] = activity['left']
