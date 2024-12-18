@@ -2,7 +2,7 @@ const https = require('https')
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
-const address = 'https://docs.google.com/spreadsheets/d/1eRZ2XRWsTXAz9iUjMNHXZsOKUowm2Tf22ljts8zQ008/htmlview'
+const address = 'https://docs.google.com/spreadsheets/d/18Bg53netet2tBV4iCQ6Cqf42PmP9csirKZ0PQrM0zGs/htmlview'
 
 function parseTotals(row) {
     let cols = row.querySelectorAll('td')
@@ -80,7 +80,7 @@ function parseData(data) {
     var totals = {};
     var sides = {};
     var activities = [];
-    var activitiesFlag = false;
+    var activitiesReached = false;
 
     var dom = new JSDOM(data)
     var table = dom.window.document.querySelectorAll('table tbody tr')
@@ -89,8 +89,8 @@ function parseData(data) {
             totals = parseTotals(row)
         } else if (row.querySelector('td').innerHTML.toLowerCase() === "activity") {
             sides = parseSides(row)
-            activitiesFlag = true
-        } else if (activitiesFlag === true) {
+            activitiesReached = true
+        } else if (activitiesReached === true) {
             activities.push(parseActivity(row))
         }
     })
@@ -108,7 +108,7 @@ function updateClients(io) {
 
         resp.on('end', () => {
             parsed = parseData(data)
-            io.emit('data', parsed)
+            io.emit('activityData', parsed)
         })
     })
     .on('error', (err) => {

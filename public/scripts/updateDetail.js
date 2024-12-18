@@ -1,7 +1,7 @@
 'use strict'
 
 const updater = new WebsocketUpdater()
-updater.subscribe('data', (data) => {
+updater.subscribe('activityData', (data) => {
     const table = document.getElementById('activities')
     table.innerHTML = ''
 

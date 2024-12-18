@@ -6,21 +6,21 @@ body {
 
 #logo {
   font-family: 'Rampart One';
-  background-color: white;
 }
 
 @supports (-webkit-text-stroke: 1px black) {
   #logo {
     -webkit-text-stroke: 3px black;
+    text-shadow: white 0 0 10px;
   }
 }
 
 .red {
-  color: red;
+  color: rgb(231, 97, 97);
 }
 
 .blue {
-  color: blue;
+  color: rgb(112, 112, 247);
 }
 
 .sticky {
