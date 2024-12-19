@@ -4,14 +4,14 @@ html
     title= title
     link(rel='stylesheet', href='/styles/styles.css')
 
-    link(rel = 'preconnect', href='https://fonts.googleapis.com')
-    link(rel = 'preconnect', href='https://fonts.gstatic.com', crossorigin)
-    link(href = 'https://fonts.googleapis.com/css2?family=Gabarito:wght@500&family=Rampart+One&display=swap', rel="stylesheet")
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin)
+    link(href='https://fonts.googleapis.com/css2?family=Gabarito:wght@500&family=Rampart+One&display=swap', rel="stylesheet")
 
     block head
 
   body
-    #header-section.sticky
+    #header-section.sticky-top
       #logo
         span.red JINGLE
         span  vs 
@@ -19,6 +19,8 @@ html
 
     #body-section
       block content
+
+    block footer
 
     script(src='/socket.io/socket.io.js')
     script(src='/scripts/websocket.js')

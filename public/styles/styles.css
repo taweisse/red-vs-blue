@@ -2,6 +2,7 @@ body {
   font-family: 'Gabarito';
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 #logo {
@@ -23,11 +24,20 @@ body {
   color: rgb(112, 112, 247);
 }
 
-.sticky {
+.sticky-top {
   position: sticky;
   top: 0;
 }
 
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;
+}
+
 #body-section {
   margin: 0 3rem;
+}
+
+.hidden {
+  visibility: hidden;
 }

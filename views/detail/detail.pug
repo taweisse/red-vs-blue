@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block head 
   link(rel='stylesheet', href='/styles/detail.css')
@@ -9,6 +9,10 @@ block content
       td.red-score
       td.activity-name Updating...
       td.blue-score
+
+block footer
+  #song-suggest.sticky-bottom.hidden
+    a#suggest-btn(href='/detail/suggest-song') Click to Suggest a Song! [+1 per song]
 
 block scripts
   script(src='/scripts/updateDetail.js')

@@ -20,12 +20,12 @@
 }
 
 .red-score {
-    color: red;
+    color: rgb(231, 97, 97);
     width: 10%;
 }
 
 .blue-score {
-    color: blue;
+    color: rgb(112, 112, 247);
     width: 10%;
 }
 
@@ -44,3 +44,42 @@
 .blue::after {
     content: '\00a0 '
 }
+
+#song-suggest {
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    filter: drop-shadow(0px -5px 10px rgb(128, 128, 128))
+}
+
+#suggest-btn {
+    background-color: #04AA6D;
+    border: none;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 3rem;
+    padding: 2rem 0;
+    cursor: pointer;
+    width: 100%;
+    text-decoration: none;
+
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+#suggest-btn:active {
+    background-color: #007c4f;
+}
+
+input[type=text] {
+    font-family: 'Gabarito';
+    font-size: 3rem;
+    width: 100%;
+    padding: 1rem;
+    margin: 3rem 0;
+    display: inline-block;
+    border: 5px solid black;
+    border-radius: 4px;
+    box-sizing: border-box;
+}  
