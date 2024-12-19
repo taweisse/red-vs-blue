@@ -5,7 +5,7 @@ block head
 
 block content
   #search
-    input(type="text" placeholder="Search for a song..." id="song-input")
+    input#song-search-box(type="text" placeholder="Search for a song...")
 
   #song-results
     ul#results
@@ -16,3 +16,4 @@ block content
 block footer
 
 block scripts
+  script(src='/scripts/searchSong.js')

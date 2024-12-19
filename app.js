@@ -25,7 +25,7 @@ var updateClients = require('./websockets/update')
 setInterval(function() { updateClients(io) }, 3000);
 
 // Send now playing data to connected websocket clients in a loop.
-var updateNowPlaying = require('./websockets/spotify')
+var updateNowPlaying = require('./websockets/spotify').updateNowPlaying
 setInterval(function() { updateNowPlaying(io) }, 1000);
 
 // view engine setup

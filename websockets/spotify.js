@@ -122,7 +122,67 @@ function updateNowPlaying(io) {
     });
 }
 
+function searchSong(search_str) {
+    if (access_token === null) {
+        console.log("No access token, cannot perform song search!")
+        return;
+    }
+
+    const params = { q: 'This is a test', market: 'US', type: 'track', limit: '5', offset: '0' };
+    const query_string = new URLSearchParams(params).toString();
+
+    const options = {
+        method: "GET",
+        hostname: "api.spotify.com",
+        path: `/v1/search?${query_string}`,
+        headers: {
+            "Authorization": `Bearer ${access_token}`
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        const req = https.request(options, (res) => {
+            let data = "";
+
+            res.on("data", (chunk) => {
+                data += chunk;
+            });
+
+            res.on("end", () => {
+                if (res.statusCode === 200) {
+                    try {
+                        const parsedData = JSON.parse(data);
+                        searchResults = [];
+
+                        parsedData.tracks.items.forEach((item) => {
+                            console.log(item)
+                            searchResults.push({
+                                name: item.name,
+                                artist: item.artists[0].name,
+                                artwork: item.album.images[0].url,
+                                track_id: item.id
+                            })
+                        });
+
+                        resolve(searchResults)
+                    } catch (err) {
+                        reject(new Error("Failed to parse response JSON."));
+                    }
+                } else {
+                    reject(new Error(`Status ${res.statusCode}`))
+                }
+            });
+        });
+
+        req.on("error", (err) => {
+            reject(err);
+        });
+
+        req.end();
+    });
+}
+
 updateAccessToken()
 setInterval(updateAccessToken, 600000);
 
-module.exports = updateNowPlaying;
+module.exports = { updateNowPlaying, searchSong};
