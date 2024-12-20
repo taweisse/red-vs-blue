@@ -4,8 +4,10 @@ block head
   link(rel='stylesheet', href='/styles/detail.css')
 
 block content
-  #search
+
+  .search-container
     input#song-search-box(type="text" placeholder="Search for a song...")
+    button#song-search-button Search
 
   #song-results
     ul#results

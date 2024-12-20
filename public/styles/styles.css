@@ -5,6 +5,11 @@ body {
   user-select: none;
 }
 
+button {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
 #logo {
   font-family: 'Rampart One';
 }

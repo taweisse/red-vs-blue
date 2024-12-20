@@ -83,6 +83,7 @@ function updateNowPlaying(io) {
         }
     };
 
+    // TODO: Resolve or reject this, don't leave it pending!
     return new Promise((resolve, reject) => {
         const req = https.request(options, (res) => {
             let data = "";
@@ -106,7 +107,7 @@ function updateNowPlaying(io) {
 
                         io.emit('songData', songData)
                     } catch (err) {
-                        reject(new Error("Failed to parse response JSON."));
+                        io.emit('songData', {})
                     }
                 } else if (res.statusCode === 204) {
                     io.emit('songData', {})
@@ -128,7 +129,7 @@ function searchSong(search_str) {
         return;
     }
 
-    const params = { q: 'This is a test', market: 'US', type: 'track', limit: '5', offset: '0' };
+    const params = { q: search_str, market: 'US', type: 'track', limit: '5', offset: '0' };
     const query_string = new URLSearchParams(params).toString();
 
     const options = {
@@ -155,7 +156,6 @@ function searchSong(search_str) {
                         searchResults = [];
 
                         parsedData.tracks.items.forEach((item) => {
-                            console.log(item)
                             searchResults.push({
                                 name: item.name,
                                 artist: item.artists[0].name,

@@ -1,22 +1,30 @@
-// Define the base URL
-const baseUrl = '/detail/song-search';
+document.getElementById('song-search-button').addEventListener('click', (event) => {
+    searchStr = document.getElementById('song-search-box').value
+    searchSong(searchStr)
+})
 
-// Define the query string parameter
-const params = new URLSearchParams({ name: 'John' });
-
-document.getElementById('song-search-box').addEventListener('input', (event) => {
-    // Search for the current input.
-    fetch(`${baseUrl}?${params}`)
-    .then((response) => {
-    if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+document.getElementById('song-search-box').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        searchSong(event.target.value);
     }
-    return response.json(); // Parse the response as JSON.
-    })
-    .then((data) => {
-    console.log('Response data:', data);
+});
+
+function searchSong(searchStr) {
+    const params = new URLSearchParams({ string: searchStr });
+
+    fetch(`/detail/song-search?${params}`)
+    .then((response) => {
+        if (!response.ok) {
+            return response.json({error: "response not ok"})
+        }
+        populateResults(response.json())
     })
     .catch((error) => {
-    console.error('Error:', error);
+        return response.json({error: "error in request"})
     });
-})
+}
+
+function populateResults(results) {
+    console.log(results)
+}

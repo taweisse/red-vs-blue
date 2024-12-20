@@ -12,7 +12,7 @@ router.get('/suggest-song', function(req, res, next) {
 });
 
 router.get('/song-search', function(req, res, next) {
-  spotify.searchSong('test')
+  spotify.searchSong(req.query.string)
   .then((data) => {
     res.json(data)
   })
