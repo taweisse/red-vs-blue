@@ -1,6 +1,7 @@
 
 var startTime = null
 var endTime = null
+var winner = null
 
 function startCountdown() {
     function tick() {
@@ -8,19 +9,30 @@ function startCountdown() {
             return;
         }
 
-        let sectionElem = document.getElementById('countdown')
-        let timerElem = document.getElementById('countdown-timer')
-
-        sectionElem.style.visibility = 'visible'
+        let countdownElem = document.getElementById('countdown')
 
         const now = Math.floor(Date.now() / 1000);
         let remaining = startTime - now;
+        let gamesRemaining = endTime - now;
+
+        console.log(gamesRemaining)
 
         if (remaining <= 0) {
-            sectionElem.style.visibility = 'hidden'
+            if (gamesRemaining <= 0) {
+                winnerElem = document.getElementById('winner-text')
+                winnerElem.innerHTML = winner
+                winnerElem.style.visibility = 'visible'
+                document.getElementById('score-section').style.visibility = 'hidden'
+                clearInterval(timerId)
+                return;
+            }
+
+            countdownElem.style.visibility = 'hidden'
             document.getElementById('score-section').style.visibility = 'visible'
-            clearInterval(timerId);
             return;
+        } else {
+            countdownElem.style.visibility = 'visible'
+            document.getElementById('score-section').style.visibility = 'hidden'
         }
 
         const hours = Math.floor(remaining / 3600);
@@ -40,6 +52,14 @@ const countdownUpdater = new WebsocketUpdater();
 countdownUpdater.subscribe('activityData', (data) => {
     startTime = data.startTime
     endTime = data.endTime
+    
+    if (data.totals.red === data.totals.blue) {
+        winner = "TIE!"
+    } else if (data.totals.red < data.totals.blue) {
+        winner = "BLUE TEAM WINS!"
+    } else {
+        winner = "RED TEAM WINS!"
+    }
 })
 
 startCountdown();

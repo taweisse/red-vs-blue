@@ -92,6 +92,21 @@ body {
     opacity: 75%;
 }
 
+#winner-text {
+    visibility: hidden;
+    text-align: center;
+    position: absolute;
+    display: block;
+
+    left: 50%;
+    transform: translate(-50%, -1rem);
+
+    font-size: 7rem;
+    margin: 0;
+    padding: 0;
+    text-shadow: white 0 0 10px;
+}
+
 #qr-code canvas {
     display: none;
 }

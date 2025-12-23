@@ -46,8 +46,8 @@ async function readSheetData() {
     })
 
     totals = {
-        'red': totalsRes.data.values[0][0],
-        'blue': totalsRes.data.values[0][1]
+        'red': Number(totalsRes.data.values[0][0]),
+        'blue': Number(totalsRes.data.values[0][1])
     }
 
     // Parse start and end time into a number of seconds since the epoch.
