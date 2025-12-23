@@ -12,5 +12,4 @@ updater.subscribe('songData', (data) => {
     document.getElementById('song').innerHTML = data.song
     document.getElementById('artist').innerHTML = data.artist
     document.body.style.backgroundImage = `url('${data.artwork}')`;
-    console.log(data)
 })

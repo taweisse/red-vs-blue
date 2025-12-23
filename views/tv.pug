@@ -4,13 +4,17 @@ block head
   link(rel='stylesheet', href='/styles/tv.css')
 
 block content
+  #countdown
+    p Games Start In
+    #countdown-timer
   #score-section
     .score-midpoint-top
-    .score-bar
-      #red-bar.score-bar
-        #red-score.score Updating...
-      #blue-bar.score-bar
-        #blue-score.score Updating...
+    #shadow
+      .score-bar
+        #red-bar.score-bar
+          #red-score.score Updating...
+        #blue-bar.score-bar
+          #blue-score.score Updating...
     .score-midpoint-bottom
 
   #qr-section
@@ -26,3 +30,4 @@ block scripts
     script(src='/scripts/qrcode.min.js')
     script(src='/scripts/tvInit.js')
     script(src='/scripts/updateTV.js')
+    script(src='/scripts/countdown.js')

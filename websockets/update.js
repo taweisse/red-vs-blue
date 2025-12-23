@@ -50,9 +50,26 @@ async function readSheetData() {
         'blue': totalsRes.data.values[0][1]
     }
 
+    // Parse start and end time into a number of seconds since the epoch.
+    var startTimeStr = startEndTimeRes.data.values[0][0]
+    var endTimeStr = startEndTimeRes.data.values[0][1]
+
+    var now = new Date()
+    var year = now.getFullYear()
+    var month = String(now.getMonth() + 1).padStart(2, '0')
+    var day = String(now.getDate()).padStart(2, '0')
+
+    var startDateTimeStr = `${year}-${month}-${day} ${startTimeStr}`
+    var endDateTimeStr = `${year}-${month}-${day} ${endTimeStr}`
+
+    var startDate = new Date(startDateTimeStr)
+    var endDate = new Date(endDateTimeStr)
+
     data = {
         'activities': activities,
-        'totals': totals
+        'totals': totals,
+        'startTime': startDate.getTime() / 1000,
+        'endTime': endDate.getTime() / 1000
     }
 
     return data
