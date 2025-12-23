@@ -19,7 +19,7 @@ updater.subscribe('activityData', (data) => {
         activityName.innerHTML = activity.name;
 
         // Cross out activities that both teams have completed.
-        if (! isNaN(activity.red) && ! isNaN(activity.blue)) {
+        if (activity.red != null && activity.blue != null) {
             activityName.classList.add('strike');
         }
 
@@ -30,6 +30,4 @@ updater.subscribe('activityData', (data) => {
 
         table.appendChild(newRow);
     });
-
-    document.getElementById('song-suggest').style.visibility = 'visible';
 })

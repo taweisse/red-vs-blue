@@ -1,10 +1,7 @@
 const https = require('https')
 const querystring = require('querystring');
+const secrets = require('./secrets.json')
 
-const client_id = '505749c539004314a989380054b05574';
-const client_secret = 'e86f1475c2aa47b9be1f09929b4809f6';
-const refresh_token = 'AQDdVCZ0eiJWP8a3THzDsp904gUORSPplO7mkLQs-gWpve3MdlYVhF55NYZG7xU3o50g0OsUABy8JA9xKNZTskLxbp9seE8Wglpf-mfY6SKZINcaHWV8eILU925OVZev7Y4';
-    
 var access_token = null;
 
 async function getSpotifyAccessToken(clientId, clientSecret, refreshToken) {
@@ -58,7 +55,7 @@ async function getSpotifyAccessToken(clientId, clientSecret, refreshToken) {
 }
 
 function updateAccessToken() {
-    getSpotifyAccessToken(client_id, client_secret, refresh_token)
+    getSpotifyAccessToken(secrets.spotify.client_id, secrets.spotify.client_secret, secrets.spotify.refresh_token)
     .then(token => {
         access_token = token;
         console.log("Updated access token:", access_token)
@@ -91,7 +88,6 @@ function updateNowPlaying(io) {
             res.on("data", (chunk) => {
                 data += chunk;
             });
-
             res.on("end", () => {
                 if (res.statusCode === 200) {
                     try {

@@ -86,7 +86,7 @@
     flex: 1; /* Allows the input to take up the remaining space */
     padding: 1rem;
     font-size: 3rem;
-    border: 5px solid black;
+    border: 5px solid rgb(126, 126, 126);
     border-right: none; /* Remove the border between the input and the button */
     border-radius: 4px 0 0 4px; /* Round left corners */
     outline: none;
@@ -100,7 +100,7 @@
     font-size: 3rem;
     background-color: #04AA6D;
     color: white;
-    border: 5px solid black;
+    border: 5px solid #04AA6D;
     border-radius: 0 4px 4px 0; /* Round right corners */
     cursor: pointer;
     box-sizing: border-box;

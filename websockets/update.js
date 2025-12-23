@@ -1,119 +1,70 @@
-const https = require('https')
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const fetch = require('node-fetch')
+const papa = require('papaparse')
+const { google } = require('googleapis')
+const secrets = require('./secrets.json')
 
-const address = 'https://docs.google.com/spreadsheets/d/18Bg53netet2tBV4iCQ6Cqf42PmP9csirKZ0PQrM0zGs/htmlview'
-
-function parseTotals(row) {
-    let cols = row.querySelectorAll('td')
-    
-    let left = cols[1].innerHTML
-    let right = cols[2].innerHTML
-
-    return {
-        left: left,
-        right: right
-    }
-}
-
-function parseSides(row) {
-    let cols = row.querySelectorAll('td')
-
-    let col1 = 'red'
-    let col2 = 'blue'
-    if (cols[1].innerHTML.toLowerCase().includes('blue')) {
-        col1 = 'blue'
-        col2 = 'red'
-    }
-
-    return {
-        left: col1,
-        right: col2
-    }
-}
-
-function parseActivity(row) {
-    let cols = row.querySelectorAll('td')
-    
-    let name = cols[0].innerHTML
-    let leftScore = cols[1].innerHTML
-    let rightScore = cols[2].innerHTML
-    let maxScore = cols[3].innerHTML ? cols[3].innerHTML : 10;
-
-    return {
-        name: name,
-        left: ! leftScore ? '-' : Math.round((leftScore / 10) * maxScore),
-        right: ! rightScore ? '-' : Math.round((rightScore / 10) * maxScore),
-        max: maxScore
-    }
-}
-
-function compileData(sides, totals, activities) {
-    let compiled = {
-        totals: {},
-        activities: []
-    }
-
-    compiled.totals[sides['left']] = totals['left']
-    compiled.totals[sides['right']] = totals['right']
-
-    activities.forEach((activity) => {
-        // Skip empty rows
-        if (! activity.name) {
-            return
-        }
-
-        let newActivity = {
-            name: `${activity.name} [${activity.max}]`
-        }
-
-        newActivity[sides['left']] = activity['left']
-        newActivity[sides['right']] = activity['right']
-
-        compiled.activities.push(newActivity)
+async function readSheetData() {
+    const sheets = google.sheets({
+        version: "v4",
+        auth: secrets.google.sheets.api_key
     })
 
-    return compiled
-}
+    const spreadsheetId = secrets.google.sheets.sheet_id
 
-function parseData(data) {
-    var totals = {};
-    var sides = {};
-    var activities = [];
-    var activitiesReached = false;
+    const activityRange = "Sheet1!A2:D200"
+    const activityRes = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: activityRange
+    })
 
-    var dom = new JSDOM(data)
-    var table = dom.window.document.querySelectorAll('table tbody tr')
-    table.forEach((row) => {
-        if (row.querySelector('td').innerHTML.toLowerCase() === 'totals') {
-            totals = parseTotals(row)
-        } else if (row.querySelector('td').innerHTML.toLowerCase() === "activity") {
-            sides = parseSides(row)
-            activitiesReached = true
-        } else if (activitiesReached === true) {
-            activities.push(parseActivity(row))
+    const startEndTimeRange = "Sheet1!F2:G2"
+    const startEndTimeRes = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: startEndTimeRange
+    })
+
+    const totalsRange = "Sheet1!I2:J2"
+    const totalsRes = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: totalsRange
+    })
+
+    var activities = []
+    activityRes.data.values.forEach((val, i) => {
+        while (val.length < 4) {
+            val.push('')
         }
+
+        var total = val[3] == '' ? 10 : Number(val[3])
+        var activity = {
+            'name': `#${i + 1} ${val[0]} [${total}]`,
+            'red': val[1] == '' ? null : Number(val[1]),
+            'blue': val[2] == '' ? null : Number(val[2]),
+        }
+
+        activities.push(activity)
     })
 
-    return compileData(sides, totals, activities)
+    totals = {
+        'red': totalsRes.data.values[0][0],
+        'blue': totalsRes.data.values[0][1]
+    }
+
+    data = {
+        'activities': activities,
+        'totals': totals
+    }
+
+    return data
 }
 
-function updateClients(io) {
-    https.get(address, (resp) => {
-        let data = ''
-
-        resp.on('data', (chunk) => {
-            data += chunk
-        })
-
-        resp.on('end', () => {
-            parsed = parseData(data)
-            io.emit('activityData', parsed)
-        })
-    })
-    .on('error', (err) => {
+async function updateClients(io) {
+    try {
+        parsed = await readSheetData()
+        io.emit('activityData', parsed)
+    } catch (err) {
         console.error('Error updating clients: ' + err.message)
-    })
+    }   
 }
 
 module.exports = updateClients;
